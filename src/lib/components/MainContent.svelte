@@ -17,6 +17,14 @@
   function handleSelectReview(review) {
     dispatch('selectReview', { review });
   }
+
+  function handleGoBack() {
+    if (selectedReview) {
+      dispatch('selectReview', { review: null });
+    } else if (selectedPullRequest) {
+      dispatch('selectPullRequest', { pullRequest: null });
+    }
+  }
 </script>
 
 <div class="w-full h-full flex flex-col justify-center items-center">
@@ -46,9 +54,17 @@
         {/if}
       </ul>
     </div>
+    
   {:else if !selectedReview}
     <div>
-      <h2 class="text-2xl font-bold mb-6 text-primary">Reviews for {selectedPullRequest.title}</h2>
+      <div class="flex items-center">
+        <button class="mr-4 mb-6" on:click={handleGoBack}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <h2 class="text-2xl font-bold mb-6 text-primary">Reviews for {selectedPullRequest.title}</h2>
+      </div>
       <ul class="space-y-4">
         {#if reviews.length > 0}
           {#each reviews as review}
@@ -67,7 +83,14 @@
     </div>
   {:else}
     <div>
-      <h2 class="text-2xl font-bold mb-6 text-primary">File Reviews for {selectedReview.title}</h2>
+      <div class="flex items-center">
+        <button class="mr-4 mb-6" on:click={handleGoBack}>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <h2 class="text-2xl font-bold mb-6 text-primary">File Reviews for {selectedReview.title}</h2>
+      </div>
       <ul class="space-y-4">
         {#if fileReviews.length > 0}
           {#each fileReviews as fileReview}
