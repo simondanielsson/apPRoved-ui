@@ -1,103 +1,124 @@
 <script>
-  import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher, onMount } from 'svelte';
+  import { slide, fade } from 'svelte/transition';
+  import { cubicInOut } from 'svelte/easing';
+  import Drawer, { Content, Header, Title } from '@smui/drawer';
+  import List, { Item } from '@smui/list';
+  import IconButton from '@smui/icon-button';
+  import { Icon, Home, Folder } from "svelte-hero-icons";
 
-  export let repositories = [];
-  let showRepositories = false;
+  import CreateRepositoryModal from './CreateRepositoryModal.svelte';
+
   let isSidebarExpanded = true;
-  
-  const dispatch = createEventDispatcher();
+  let showRepositories = false;
+  let selectedRepository = null;
+  let showCreateRepositoryModal = false;
+  export let repositories = [];
 
+  const dispatch = createEventDispatcher();
+    
   function toggleRepositories() {
+    if (!isSidebarExpanded) {
+      toggleSidebarSize()
+    }
     showRepositories = !showRepositories;
   }
-    
+
+  function toggleCreateRepositoryModal() {
+    showCreateRepositoryModal = !showCreateRepositoryModal;
+  }
+
+  function handleSelectRepository(repo) {
+    dispatch('selectRepository', {"repository": repo});
+  }
+
+  function handleSelectHome() {
+    if (!isSidebarExpanded) {
+      toggleSidebarSize()
+    }
+    dispatch('selectRepository', {"repository": null});
+  }
+
   function toggleSidebarSize() {
     isSidebarExpanded = !isSidebarExpanded;
   }
-
-  function selectRepository(repo) {
-    console.log('Selected repository:', repo);
-    dispatch('selectRepository', {"repository": repo});
-  }
 </script>
 
-
-<div class="h-full shadow-lg flex flex-col">
-  <!-- Sidebar -->
-  <div class="bg-primary text-white p-6 h-full flex flex-col transition-all duration-300" class:w-64={isSidebarExpanded} class:w-20={!isSidebarExpanded}>
-    
-    {#if isSidebarExpanded}
-      <div class="flex items-center mb-8">
-        <img src="/favicon-32x32.png" alt="Logo" class="h-8 w-8 mr-3" />
-        <span class="text-2xl font-bold">apPRoved</span>
-        <!-- Resizing Button (arrow icon) at the top -->
-        <button class="text-white p-2" on:click={toggleSidebarSize}>
-          <span class="ant-btn-icon">
-            <svg 
-              xmlns="http://www.w3.org/2000/svg" 
-              fill="none" 
-              viewBox="0 0 24 24" 
-              stroke="currentColor" 
-              stroke-width="0"
-              class="w-6 h-6 transition-transform transform duration-200" 
-              class:rotate-180={!isSidebarExpanded}>
-                <path fill="none" d="M0 0h24v24H0V0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 18h13v-2H3v2zm0-5h10v-2H3v2zm0-7v2h13V6H3zm18 9.59L17.42 12 21 8.41 19.59 7l-5 5 5 5L21 15.59z" />
-            </svg>
-          <span>
-        </button>
-      </div>
-
-      <div class="mb-4">
-        <button class="flex items-center text-lg font-bold cursor-pointer bg-transparent border-none w-full text-left hover:text-gray-300 transition-all" on:click={toggleRepositories} type="button">
-          Repositories
-          <svg 
-            class="ml-2 h-4 w-4 transition-transform duration-200"
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            stroke="currentColor"
-            class:rotate-180={showRepositories}>
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-
-        {#if showRepositories}
-          <ul class="mt-4 space-y-2">
-            {#each repositories as repository}
-              <li>
-                <button class="bg-primary hover:bg-primary-dark p-2 rounded w-full text-left text-white border border-primary focus:outline-none focus:ring-white" on:click={() => selectRepository(repository)}>
-                  {repository.name}
-                </button>
-              </li>
-            {/each}
-          </ul>
+<Drawer variant="dismissible" open={true} class="bg-primary text-white transition-all duration-300 {isSidebarExpanded ? 'w-64' : 'w-24'}">
+  <div class="flex flex-col h-full items-center">
+    <!-- Header Section -->
+    <Header class="flex items-center justify-between p-4">
+      <div class="flex items-center">
+        <img src="/favicon-32x32.png" alt="Icon" class="mr-2 w-8 h-8" />  <!-- Increased size for better visibility -->
+        {#if isSidebarExpanded}
+          <span in:fade={{ duration: 100 }}>
+            <Title class="text-xl font-bold text-white">apPRoved</Title>
+          </span>
         {/if}
       </div>
-    {:else}
-        <div class="flex items-center mb-8">
-          <button class="text-white p-2" on:click={toggleSidebarSize}>
-            <span class="ant-btn-icon">
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor" 
-                stroke-width="0"
-                class="w-6 h-6 transition-transform transform duration-200" 
-                class:rotate-180={!isSidebarExpanded}>
-                  <path fill="none" d="M0 0h24v24H0V0z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-              </svg>
-            <span>
-          </button>
-        </div>
-    {/if}
-  </div>
-</div>
 
-<style>
-  .ant-btn-icon {
-      line-height: 1;
-  }
-</style>
+      <button class="text-white {isSidebarExpanded ? 'ml-4' : ''}" on:click={toggleSidebarSize}>
+        <span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            class="w-6 h-6 transition-transform transform duration-200 {isSidebarExpanded ? '' : 'rotate-180'}"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 18h13v-2H3v2zm0-5h10v-2H3v2zm0-7v2h13V6H3zm18 9.59L17.42 12 21 8.41 19.59 7l-5 5 5 5L21 15.59z" />
+          </svg>
+        </span>
+      </button>
+    </Header>
+
+    <!-- Content Section -->
+    <Content class="flex-1 w-full">
+      <List class="w-full items-center">
+        <!-- Home Item -->
+        <Item class="flex items-center p-2 ml-4 mr-4 hover:bg-primary-dark rounded-lg transition-colors cursor-pointer" role="button" tabindex="0" on:click={handleSelectHome}>
+          <Icon src="{Home}" class="h-6 w-6" solid />
+          <span class="ml-4 text-base font-medium text-white whitespace-nowrap {isSidebarExpanded ? '' : 'hidden'}">Home</span>
+        </Item>
+
+        <!-- Repositories Item -->
+        <Item class="flex items-center ml-4 mr-4 p-2 hover:bg-primary-dark rounded-lg transition-colors cursor-pointer" role="button" tabindex="0" on:click={toggleRepositories}>
+          <Icon src="{Folder}" class="h-6 w-6" solid />
+          <span class="ml-4 text-base font-medium text-white whitespace-nowrap {isSidebarExpanded ? '' : 'hidden'}">Repositories</span>
+          <span class="ml-auto mr-2 {isSidebarExpanded ? 'block' : 'hidden'} transition-transform transform {showRepositories ? 'rotate-90' : ''}">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </Item>
+
+        {#if showRepositories && isSidebarExpanded}
+          <div class="mt-2 w-full" transition:slide={{ duration: 200, easing: cubicInOut }}>
+            <List class="flex flex-col w-full bg-primary-dark p-2">
+              {#each repositories as repository}
+                <Item 
+                  class="p-2 hover:bg-primary-dark rounded-lg hover:text-gray-300 w-full cursor-pointer" 
+                  role="button" 
+                  tabindex=0 
+                  on:click={() => handleSelectRepository(repository)}>
+                  <span class="whitespace-nowrap">{repository.name}</span>
+                </Item>
+              {/each}
+
+            <Item class="p-2 mt-1 mb-2 items-center border text-white rounded-lg shadow hover:shadow-lg hover:bg-blue-700 transition-all cursor-pointer" role="button" tabindex="0" on:click={toggleCreateRepositoryModal}>
+              <div class="flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
+                <span class="ml-2">Add Repository</span>
+              </div>
+            </Item>
+            </List>
+          </div>
+        {/if}
+      </List>
+    </Content>
+  </div>
+</Drawer>
+
+<CreateRepositoryModal show={showCreateRepositoryModal} onClose={toggleCreateRepositoryModal} />
