@@ -173,7 +173,7 @@
               <span class="{isPending(review) ? 'text-gray-500' : 'text-gray-700'}">Created at <Time timestamp={review.created_at} format="dddd @ h:mm A · MMMM D, YYYY"/>
             </a>
             {#if !isPending(review)}
-              <div class="ml-2 flex flex-row">
+              <div class="ml-2 flex flex-row items-center">
                 <Icon src={CheckCircle} class="h-8 w-8 text-green-500" solid />
                 <EllipsisButton on:delete={(event) => handleDeleteClick(review, event)} /> 
               </div>
