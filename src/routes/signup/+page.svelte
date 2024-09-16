@@ -1,28 +1,14 @@
 <script>
-    import axios from 'axios';
-    import { registerUser } from '$lib/utils/api.js';
-    import { registerSchema } from '$lib/models/auth.js';
+    import { page } from '$app/stores';
+
     let username = '';
     let email = '';
     let password = '';
     let error = '';
     let success = '';
 
-    async function handleSignUp() {
-        const result = registerSchema.safeParse({ username, email, password });
-
-        if (!result.success) {
-            error = result.error.errors.map(e => e.message).join(", ");
-            return;
-        }
-        try {
-            const userData = await registerUser(username, email, password)
-            success = 'Account created successfully. Please log in.';
-            console.log(userData);
-        } catch (err) {
-            error = 'Error creating account. Please try again.';
-            console.error(err);
-        }
+    $: if ($page.form?.error) {
+      error = $page.form.error;
     }
 </script>
 
@@ -38,20 +24,20 @@
             <p class="text-green-500 mb-4">{success}</p>
         {/if}
 
-        <form on:submit|preventDefault={handleSignUp} class="space-y-6">
+        <form method="POST" class="space-y-6">
             <div>
                 <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                <input type="text" id="username" bind:value={username} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
+                <input type="text" id="username" name="username" bind:value={username} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
             </div>
             
             <div>
                 <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                <input type="email" id="email" bind:value={email} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
+                <input type="email" id="email" name="email" bind:value={email} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
             </div>
 
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" id="password" bind:value={password} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
+                <input type="password" id="password" name="password" bind:value={password} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
             </div>
 
             <button type="submit" class="w-full py-2 px-4 bg-primary text-white rounded-md hover:bg-blue-700 transition">Sign Up</button>

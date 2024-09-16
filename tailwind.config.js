@@ -13,6 +13,9 @@ export default {
         },
         secondary: '#FFFFFF',
       },
+      fontFamily: {
+        'fira-code': ['Fira Code', 'monospace'],
+      },
     },
   },
   plugins: [

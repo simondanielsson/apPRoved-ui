@@ -1,24 +1,12 @@
 <script>
-    import { onMount } from 'svelte';
-    import { get } from 'svelte/store';
-    import { goto } from '$app/navigation';
-    import { token } from '$lib/stores/auth.js';
-    import { initializeToken } from '$lib/stores/auth.js';
-    import '../tailwind.css';
+  import '../tailwind.css';
 
-    onMount(() => {
-        initializeToken();
-    });
+  import hljs from 'highlight.js/lib/core';
+  import javascript from 'highlight.js/lib/languages/javascript';
+  import python from 'highlight.js/lib/languages/python';
 
-    export async function load({ session }) {
-        const userToken = get(token);
-        console.log('User token:', userToken);
-
-        if (!userToken) {
-            goto('/login');
-            return;
-        }
-    }
+  hljs.registerLanguage('javascript', javascript);
+  hljs.registerLanguage('python', python);
 </script>
 
 <slot />

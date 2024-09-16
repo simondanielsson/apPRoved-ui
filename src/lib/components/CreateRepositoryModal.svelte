@@ -1,13 +1,25 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
+  import { clickOutside } from '$lib/utils/clickOutside.js';
   export let show = false;
   export let onClose;
   let url = '';
   let owner = '';
   let name = '';
 
+  const dispatch = createEventDispatcher();
+
   function createRepository() {
-    // TODO
-    console.log('Repository Created:', { url, owner, name });
+    if (!url || !owner || !name) {
+      alert("All fields are required.");
+      return;
+    }
+
+    dispatch('createRepository', {
+      url,
+      owner,
+      name
+    });
     onClose();
     resetForm();
   }
@@ -17,12 +29,18 @@
     owner = '';
     name = '';
   }
+
+  function handleClickOutside() {
+    onClose();
+    resetForm();
+  }
+  
 </script>
 
 {#if show}
-  <!-- Modal Overlay -->
+  Modal Overlay
   <div class="fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center z-50">
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md" use:clickOutside on:outclick={handleClickOutside}>
       <h2 class="text-xl font-bold mb-4">Add New Repository</h2>
 
       <form on:submit|preventDefault={createRepository}>
@@ -35,6 +53,7 @@
             placeholder="https://github.com/user/repo"
             bind:value={url}
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+            autocomplete="off"
             required
           />
           <p class="mt-1 text-sm text-gray-500">Enter the full URL of the GitHub repository.</p>
@@ -49,6 +68,7 @@
             placeholder="Owner Name"
             bind:value={owner}
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+            autocomplete="off"
             required
           />
         </div>
@@ -62,6 +82,7 @@
             placeholder="Repository Name"
             bind:value={name}
             class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary"
+            autocomplete="off"
             required
           />
         </div>

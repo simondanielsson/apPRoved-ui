@@ -2,19 +2,23 @@ import { writable } from 'svelte/store';
 
 export const token = writable(null);
 
-export function setToken(newToken) {
-    token.set(newToken);
-    localStorage.setItem('authToken', newToken);
-}
-
-export function clearToken() {
-    token.set(null);
-    localStorage.removeItem('authToken');
-}
-
-export function initializeToken() {
-    const storedToken = localStorage.getItem('authToken');
+if (typeof window !== 'undefined') {
+    console.log('token store: setting token from localStorage');
+    const storedToken = localStorage.getItem('token') || document.cookie.split('; ').find(row => row.startsWith('token='))?.split('=')[1];
     if (storedToken) {
+        console.log('Setting token from localStorage:', storedToken);
         token.set(storedToken);
     }
 }
+
+token.subscribe(value => {
+    console.log('token subscription: received value', value);
+    if (value) {
+        localStorage.setItem('token', value);
+    } else {
+        localStorage.removeItem('token');
+    }
+});
+
+
+

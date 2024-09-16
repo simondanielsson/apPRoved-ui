@@ -9,10 +9,13 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check . && eslint .",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"prepare": "npm run smui-theme",
+		"smui-theme": "smui-theme compile static/smui.css -i src/theme"
 	},
 	"devDependencies": {
 		"@material/typography": "^14.0.0",
+		"@smui/circular-progress": "^7.0.0",
 		"@steeze-ui/heroicons": "^2.4.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
@@ -26,6 +29,7 @@
 		"postcss": "^8.4.45",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
+		"smui-theme": "^7.0.0",
 		"svelte": "^4.2.7",
 		"svelte-check": "^4.0.0",
 		"svelte-hero-icons": "^5.2.0",
@@ -36,15 +40,23 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@material/circular-progress": "^14.0.0",
+		"@material/theme": "^14.0.0",
+		"@okrad/svelte-progressbar": "^2.2.0",
 		"@smui/button": "^7.0.0",
 		"@smui/drawer": "^7.0.0",
 		"@smui/icon-button": "^7.0.0",
 		"@smui/list": "^7.0.0",
 		"@tailwindcss/typography": "^0.5.15",
 		"antd": "^5.20.6",
-		"axios": "^1.7.7",
+		"diff2html": "^3.4.48",
+		"dotenv": "^16.4.5",
+		"highlight.js": "^11.10.0",
+		"jsonwebtoken": "^9.0.2",
 		"marked": "^14.1.2",
 		"material-design-icons-iconfont": "^6.7.0",
+		"prismjs": "^1.29.0",
+		"svelte-time": "^0.9.0",
 		"zod": "^3.23.8"
 	}
 }

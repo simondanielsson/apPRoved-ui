@@ -1,30 +1,18 @@
 <script>
-    import { onMount } from 'svelte';
-    import { goto } from '$app/navigation';
-    import axios from 'axios';
-    import { loginUser } from '$lib/utils/api.js';
-    import { loginSchema } from '$lib/models/auth.js';
-    import { setToken } from '$lib/stores/auth.js';
+    import { page } from '$app/stores';
+    import PopupNotification from '$lib/components/PopupNotification.svelte';
+
     let username = '';
     let password = '';
     let error = '';
+    let successMessage = '';
 
-    async function handleLogin() {
-        const result = loginSchema.safeParse({ username, password });  // Validate the input
+    $: if ($page.url.searchParams.get('success') === '1') {
+        successMessage = 'Registration successful! You can now log in.';
+    }
 
-        if (!result.success) {
-            error = result.error.errors.map(e => e.message).join(", ");
-            return;
-        }
-        try {
-            const userData = await loginUser(username, password);
-            setToken(userData.token);
-            console.log('Login successful:', userData.token);
-            goto('/');
-        } catch (err) {
-            error = 'Invalid username or password';
-            console.error(err);
-        }
+    $: if ($page.form?.error) {
+      error = $page.form.error;
     }
 </script>
 
@@ -35,16 +23,22 @@
         {#if error}
             <p class="text-red-500 mb-4">{error}</p>
         {/if}
-        
-        <form on:submit|preventDefault={handleLogin} class="space-y-6">
+
+        {#if successMessage}
+          <PopupNotification type={"success"}> 
+            {successMessage}
+          </PopupNotification>
+        {/if}
+
+        <form method="POST" class="space-y-6">
             <div>
                 <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
-                <input type="text" id="username" bind:value={username} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
+                <input type="text" id="username" name="username" bind:value={username} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
             </div>
             
             <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
-                <input type="password" id="password" bind:value={password} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
+                <input type="password" id="password" name="password" bind:value={password} required class="w-full mt-1 p-2 border border-gray-300 rounded-md focus:ring-primary focus:border-primary"/>
             </div>
             
             <button type="submit" class="w-full py-2 px-4 bg-primary text-white rounded-md hover:bg-blue-700 transition">Login</button>

@@ -1,10 +1,9 @@
 <script>
   import { createEventDispatcher } from 'svelte';
   import { fade } from 'svelte/transition';
-  import Button, { Label } from '@smui/button';
-  import List, { Item, Text } from '@smui/list';
+  import Button from '@smui/button';
+  import List, { Item} from '@smui/list';
   import IconButton from '@smui/icon-button';
-  import { marked } from 'marked';
 
   import FileReview from './FileReview.svelte';
 
@@ -19,10 +18,6 @@
   let reviewName = '';
 
   const dispatch = createEventDispatcher();
-
-  function renderMarkdown(content) {
-    return marked(content);
-  }
 
   function handleSelectPullRequest(pr) {
     dispatch('selectPullRequest', { pullRequest: pr });
@@ -139,27 +134,5 @@
 
   {:else}
     <FileReview {fileReviews} />
-    <!-- <div> -->
-    <!--   <div class="flex items-center"> -->
-    <!--     <IconButton class="mr-4 mb-6" on:click={handleGoBack}> -->
-    <!--       <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"> -->
-    <!--         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /> -->
-    <!--       </svg> -->
-    <!--     </IconButton> -->
-    <!--     <h2 class="text-2xl font-bold mb-6 text-primary">File Reviews for {selectedReview.title}</h2> -->
-    <!--   </div> -->
-    <!--   <List class="space-y-4"> -->
-    <!--     {#if fileReviews.length > 0} -->
-    <!--       {#each fileReviews as fileReview} -->
-    <!--         <Item class="bg-white p-4 rounded-lg shadow-lg"> -->
-    <!--           <h3 class="text-lg font-semibold">{fileReview.filename}</h3> -->
-    <!--           <div class="prose mt-2 text-gray-700" innerHTML={renderMarkdown(fileReview.content)}></div> -->
-    <!--         </Item> -->
-    <!--       {/each} -->
-    <!--     {:else} -->
-    <!--       <p class="text-gray-700">No file reviews available.</p> -->
-    <!--     {/if} -->
-    <!--   </List> -->
-    <!-- </div> -->
   {/if}
 </div>
