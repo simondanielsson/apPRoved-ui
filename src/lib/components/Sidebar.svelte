@@ -4,8 +4,6 @@
 	import Drawer, { Content, Header, Title } from '@smui/drawer';
 	import List, { Item } from '@smui/list';
 	import { Icon, Home, Folder } from 'svelte-hero-icons';
-	import NewCreateRepositoryModal from './NewCreateRepositoryModal.svelte';
-	import Modal from './Modal.svelte';
 	import { selectedRepository } from '$lib/stores/repository';
 	import CreateRepositoryModal from './CreateRepositoryModal.svelte';
 
@@ -200,15 +198,6 @@
 									<span class="ml-2">Add Repository</span>
 								</div>
 							</Item>
-
-							<!-- {#if showCreateRepositoryModal} -->
-							<!--   <Modal bind:show={showCreateRepositoryModal} onClose={toggleCreateRepositoryModal} {buttonPosition}> -->
-							<!--     <NewCreateRepositoryModal  -->
-							<!--       onClose={toggleCreateRepositoryModal}  -->
-							<!--       on:createRepository -->
-							<!--       /> -->
-							<!--   </Modal> -->
-							<!-- {/if} -->
 						</List>
 					</div>
 				{/if}
@@ -222,10 +211,3 @@
 	onClose={toggleCreateRepositoryModal}
 	on:createRepository
 />
-<!-- <Modal bind:show={showCreateRepositoryModal} {buttonPosition}> -->
-<!--   <NewCreateRepositoryModal  -->
-<!--     show={showCreateRepositoryModal}  -->
-<!--     onClose={toggleCreateRepositoryModal}  -->
-<!--     on:createRepository -->
-<!--     /> -->
-<!-- </Modal> -->

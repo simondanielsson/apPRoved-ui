@@ -1,6 +1,6 @@
-import { createReview } from '$lib/utils/api/reviews';
+import { fetchReviews } from '$lib/utils/api/reviews';
 
-export async function POST({ params, request, fetch }) {
+export async function GET({ params, fetch }) {
 	const { id, prID } = params;
-	return await createReview(id, prID, request, fetch);
+	return await fetchReviews(id, prID, fetch);
 }

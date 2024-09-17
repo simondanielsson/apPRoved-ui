@@ -7,9 +7,8 @@ export async function loginUser(formData) {
 			body: formData
 		});
 		const data = await response.json();
-		console.log('loginUser function:', data);
 		return data;
-	} catch (error) {
+	} catch {
 		throw new Error('Login failed');
 	}
 }
@@ -21,9 +20,8 @@ export async function registerUser(formData) {
 			body: formData
 		});
 		const data = await response.json();
-		console.log('registerUser function:', data);
 		return data.id;
-	} catch (error) {
+	} catch {
 		throw new Error('Registration failed');
 	}
 }

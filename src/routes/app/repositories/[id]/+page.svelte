@@ -1,13 +1,13 @@
 <script>
 	import Button from '@smui/button';
 	import List, { Item } from '@smui/list';
-	import { selectedRepository } from '$lib/stores/repository';
 	import { selectedPullRequest } from '$lib/stores/pull-request';
 	import Time from 'svelte-time';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	$: repoID = data.repoID;
+  $: repository = data.repository;
 	$: pullRequests = data.pullRequests || [];
 
 	function handleSelectPullRequest(pr) {
@@ -21,7 +21,7 @@
 
 <div>
 	<h2 class="text-2xl font-bold mb-6 text-primary">
-		Pull Requests for {$selectedRepository ? $selectedRepository.name : 'Loading...'}
+		Pull Requests for {repository ? repository.name : 'Loading...'}
 	</h2>
 	<List class="space-y-4">
 		{#if pullRequests}

@@ -9,8 +9,6 @@
 		const repoInfo = event.detail;
 		const repository = await registerRepository(repoInfo, fetch);
 		repositories = [...repositories, repository];
-		console.log('Created new repository', repository);
-		console.log('Now repositories are', repositories);
 	}
 </script>
 

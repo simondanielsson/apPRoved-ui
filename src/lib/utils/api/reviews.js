@@ -5,27 +5,10 @@ export async function fetchRepositories(cookies) {
 		headers: { Authorization: `Bearer ${cookies.get('token')}` }
 	});
 	if (response.status != 200) {
-		console.log(response);
 		throw new Error('Failed to fetch repositories');
 	}
 	const data = await response.json();
 	return data.repositories;
-}
-
-export async function fetchPullRequests(repositoryId, fetch) {
-	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests`);
-}
-
-export async function fetchReviews(repositoryId, pullRequestId, fetch) {
-	return await fetch(
-		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`
-	);
-}
-
-export async function fetchFileReviews(repositoryId, pullRequestId, reviewId, fetch) {
-	return await fetch(
-		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`
-	);
 }
 
 export async function registerRepository(request, fetch) {
@@ -38,6 +21,38 @@ export async function registerRepository(request, fetch) {
 		},
 		body: await request.formData()
 	});
+}
+
+export async function fetchRepository(repositoryId, fetch) {
+  return await fetch (
+    `${API_URL}/repositories/${repositoryId}`
+  )
+}
+
+export async function fetchPullRequests(repositoryId, fetch) {
+	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests`);
+}
+
+export async function fetchPullRequest(repositoryId, prID, fetch) {
+	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests/${prID}`);
+}
+
+export async function fetchReviews(repositoryId, pullRequestId, fetch) {
+	return await fetch(
+		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`
+	);
+}
+
+export async function getReview(repositoryId, pullRequestId, reviewId, fetch) {
+  return await fetch(
+    `${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`
+  );
+}
+
+export async function fetchFileReviews(repositoryId, pullRequestId, reviewId, fetch) {
+	return await fetch(
+		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}/files`
+	);
 }
 
 export async function createReview(repoID, prID, request, fetch) {

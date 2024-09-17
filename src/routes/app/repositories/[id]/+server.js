@@ -1,6 +1,6 @@
-import { fetchPullRequests } from '$lib/utils/api/reviews';
+import { fetchRepository } from '$lib/utils/api/reviews';
 
 export async function GET({ params, fetch }) {
-	const { id } = params;
-	return await fetchPullRequests(id, fetch);
+  const { id } = params;
+  return await fetchRepository(id, fetch);
 }

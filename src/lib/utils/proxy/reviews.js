@@ -4,8 +4,6 @@ export async function registerRepository(repoInfo, fetch) {
 	formData.append('owner', repoInfo.owner);
 	formData.append('name', repoInfo.name);
 
-	console.log('Form data on client:', formData.get('url'));
-	console.log('repoinfo', repoInfo);
 	const response = await fetch('/app/repositories', {
 		method: 'POST',
 		body: formData
@@ -15,6 +13,15 @@ export async function registerRepository(repoInfo, fetch) {
 	}
 	const repository = await response.json();
 	return repository.data;
+}
+
+export async function fetchRepository(repoID, fetch) {
+  const response = await fetch(`/app/repositories/${repoID}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch repository');
+  }
+  const repository = await response.json();
+  return repository.data;
 }
 
 export async function getReviewStatus(repoID, prID, reviewID, fetch) {
@@ -46,7 +53,7 @@ export async function createReview(repoID, prID, reviewName, fetch) {
 }
 
 export async function fetchPullRequests(repositoryId, fetch) {
-	const response = await fetch(`/app/repositories/${repositoryId}`);
+	const response = await fetch(`/app/repositories/${repositoryId}/pull-requests`);
 	if (response.status != 200) {
 		throw new Error('Failed to fetch pull requests');
 	}
@@ -55,8 +62,17 @@ export async function fetchPullRequests(repositoryId, fetch) {
 	return pullRequests.data;
 }
 
+export async function fetchPullRequest(repositoryId, pullRequestId, fetch) {
+  const response = await fetch(`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}`);
+  if (response.status != 200) {
+    throw new Error('Failed to fetch pull request');
+  }
+  const pullRequest = await response.json();
+  return pullRequest.data;
+}
+
 export async function fetchReviews(repositoryId, pullRequestId, fetch) {
-	const response = await fetch(`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}`);
+	const response = await fetch(`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`);
 	if (response.status != 200) {
 		throw new Error('Failed to fetch reviews');
 	}
@@ -64,9 +80,20 @@ export async function fetchReviews(repositoryId, pullRequestId, fetch) {
 	return reviews.data;
 }
 
+export async function fetchReview(repositoryId, pullRequestId, reviewId, fetch) {
+  const response = await fetch(
+    `/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`
+  );
+  if (response.status != 200) {
+    throw new Error('Failed to fetch review');
+  }
+  const review = await response.json();
+  return review.data;
+}
+
 export async function fetchFileReviews(repositoryId, pullRequestId, reviewId, fetch) {
 	const response = await fetch(
-		`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`
+		`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}/files`
 	);
 	if (response.status != 200) {
 		throw new Error('Failed to fetch file reviews');
