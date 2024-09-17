@@ -1,11 +1,13 @@
 import { deleteReview, getReview } from '$lib/utils/api/reviews';
 
-export async function GET({ params, fetch }) {
-  const { id, prID, reviewID } = params;
-  return await getReview(id, prID, reviewID, fetch);
+export async function GET({ request, params, fetch }) {
+	const { id, prID, reviewID } = params;
+	const cookies = request.headers.get('cookie');
+	return await getReview(id, prID, reviewID, cookies, fetch);
 }
 
-export async function DELETE({ params, fetch }) {
+export async function DELETE({ request, params, fetch }) {
 	const { id, prID, reviewID } = params;
-	return await deleteReview(id, prID, reviewID, fetch);
+	const cookies = request.headers.get('cookie');
+	return await deleteReview(id, prID, reviewID, cookies, fetch);
 }

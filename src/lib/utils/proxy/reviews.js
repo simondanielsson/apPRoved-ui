@@ -16,12 +16,12 @@ export async function registerRepository(repoInfo, fetch) {
 }
 
 export async function fetchRepository(repoID, fetch) {
-  const response = await fetch(`/app/repositories/${repoID}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch repository');
-  }
-  const repository = await response.json();
-  return repository.data;
+	const response = await fetch(`/app/repositories/${repoID}`);
+	if (!response.ok) {
+		throw new Error('Failed to fetch repository');
+	}
+	const repository = await response.json();
+	return repository.data;
 }
 
 export async function getReviewStatus(repoID, prID, reviewID, fetch) {
@@ -63,16 +63,18 @@ export async function fetchPullRequests(repositoryId, fetch) {
 }
 
 export async function fetchPullRequest(repositoryId, pullRequestId, fetch) {
-  const response = await fetch(`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}`);
-  if (response.status != 200) {
-    throw new Error('Failed to fetch pull request');
-  }
-  const pullRequest = await response.json();
-  return pullRequest.data;
+	const response = await fetch(`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}`);
+	if (response.status != 200) {
+		throw new Error('Failed to fetch pull request');
+	}
+	const pullRequest = await response.json();
+	return pullRequest.data;
 }
 
 export async function fetchReviews(repositoryId, pullRequestId, fetch) {
-	const response = await fetch(`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`);
+	const response = await fetch(
+		`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`
+	);
 	if (response.status != 200) {
 		throw new Error('Failed to fetch reviews');
 	}
@@ -81,14 +83,14 @@ export async function fetchReviews(repositoryId, pullRequestId, fetch) {
 }
 
 export async function fetchReview(repositoryId, pullRequestId, reviewId, fetch) {
-  const response = await fetch(
-    `/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`
-  );
-  if (response.status != 200) {
-    throw new Error('Failed to fetch review');
-  }
-  const review = await response.json();
-  return review.data;
+	const response = await fetch(
+		`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`
+	);
+	if (response.status != 200) {
+		throw new Error('Failed to fetch review');
+	}
+	const review = await response.json();
+	return review.data;
 }
 
 export async function fetchFileReviews(repositoryId, pullRequestId, reviewId, fetch) {

@@ -47,6 +47,7 @@
 		"@smui/drawer": "^7.0.0",
 		"@smui/icon-button": "^7.0.0",
 		"@smui/list": "^7.0.0",
+		"@sveltejs/adapter-node": "^5.2.2",
 		"@tailwindcss/typography": "^0.5.15",
 		"antd": "^5.20.6",
 		"diff2html": "^3.4.48",

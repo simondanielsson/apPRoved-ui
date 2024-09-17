@@ -23,35 +23,60 @@ export async function registerRepository(request, fetch) {
 	});
 }
 
-export async function fetchRepository(repositoryId, fetch) {
-  return await fetch (
-    `${API_URL}/repositories/${repositoryId}`
-  )
+export async function fetchRepository(repositoryId, cookies, fetch) {
+	return await fetch(`${API_URL}/repositories/${repositoryId}`, {
+		headers: {
+			Cookie: cookies
+		}
+	});
 }
 
-export async function fetchPullRequests(repositoryId, fetch) {
-	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests`);
+export async function fetchPullRequests(repositoryId, cookies, fetch) {
+	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests`, {
+		headers: {
+			Cookie: cookies
+		}
+	});
 }
 
-export async function fetchPullRequest(repositoryId, prID, fetch) {
-	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests/${prID}`);
+export async function fetchPullRequest(repositoryId, prID, cookies, fetch) {
+	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests/${prID}`, {
+		headers: {
+			Cookie: cookies
+		}
+	});
 }
 
-export async function fetchReviews(repositoryId, pullRequestId, fetch) {
+export async function fetchReviews(repositoryId, pullRequestId, cookies, fetch) {
 	return await fetch(
-		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`
+		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`,
+		{
+			headers: {
+				Cookie: cookies
+			}
+		}
 	);
 }
 
-export async function getReview(repositoryId, pullRequestId, reviewId, fetch) {
-  return await fetch(
-    `${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`
-  );
+export async function getReview(repositoryId, pullRequestId, reviewId, cookies, fetch) {
+	return await fetch(
+		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}`,
+		{
+			headers: {
+				Cookie: cookies
+			}
+		}
+	);
 }
 
-export async function fetchFileReviews(repositoryId, pullRequestId, reviewId, fetch) {
+export async function fetchFileReviews(repositoryId, pullRequestId, reviewId, cookies, fetch) {
 	return await fetch(
-		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}/files`
+		`${API_URL}/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews/${reviewId}/files`,
+		{
+			headers: {
+				Cookie: cookies
+			}
+		}
 	);
 }
 
@@ -65,17 +90,25 @@ export async function createReview(repoID, prID, request, fetch) {
 	});
 }
 
-export async function getReviewStatus(repoID, prID, reviewID, fetch) {
+export async function getReviewStatus(repoID, prID, reviewID, cookies, fetch) {
 	return await fetch(
-		`${API_URL}/repositories/${repoID}/pull-requests/${prID}/reviews/${reviewID}/progress`
+		`${API_URL}/repositories/${repoID}/pull-requests/${prID}/reviews/${reviewID}/progress`,
+		{
+			headers: {
+				Cookie: cookies
+			}
+		}
 	);
 }
 
-export async function deleteReview(repoID, prID, reviewID, fetch) {
+export async function deleteReview(repoID, prID, reviewID, cookies, fetch) {
 	return await fetch(
 		`${API_URL}/repositories/${repoID}/pull-requests/${prID}/reviews/${reviewID}`,
 		{
-			method: 'DELETE'
+			method: 'DELETE',
+			headers: {
+				Cookie: cookies
+			}
 		}
 	);
 }

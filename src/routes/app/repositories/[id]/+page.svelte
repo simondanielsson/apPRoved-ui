@@ -7,7 +7,7 @@
 	/** @type {import('./$types').PageData} */
 	export let data;
 	$: repoID = data.repoID;
-  $: repository = data.repository;
+	$: repository = data.repository;
 	$: pullRequests = data.pullRequests || [];
 
 	function handleSelectPullRequest(pr) {

@@ -1,6 +1,7 @@
 import { getReviewStatus } from '$lib/utils/api/reviews';
 
-export async function GET({ params, fetch }) {
+export async function GET({ request, params, fetch }) {
 	const { id, prID, reviewID } = params;
-	return await getReviewStatus(id, prID, reviewID, fetch);
+	const cookies = request.headers.get('cookie');
+	return await getReviewStatus(id, prID, reviewID, cookies, fetch);
 }

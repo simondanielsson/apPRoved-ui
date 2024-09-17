@@ -1,6 +1,7 @@
 import { fetchPullRequest } from '$lib/utils/api/reviews';
 
-export async function GET({ params, fetch }) {
+export async function GET({ request, params, fetch }) {
 	const { id, prID } = params;
-	return await fetchPullRequest(id, prID, fetch);
+	const cookies = request.headers.get('cookie');
+	return await fetchPullRequest(id, prID, cookies, fetch);
 }

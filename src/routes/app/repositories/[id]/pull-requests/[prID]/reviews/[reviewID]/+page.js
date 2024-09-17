@@ -7,25 +7,25 @@ import { get } from 'svelte/store';
 export async function load({ params, fetch }) {
 	const { id, prID, reviewID } = params;
 
-  let review = get(selectedReview);
-  let pullRequest = get(selectedPullRequest);
+	let review = get(selectedReview);
+	let pullRequest = get(selectedPullRequest);
 
-  if (!review || Number(review.id) !== Number(reviewID)) {
-    review = await fetchReview(id, prID, reviewID, fetch)
-    selectedReview.set(review)
-  }
+	if (!review || Number(review.id) !== Number(reviewID)) {
+		review = await fetchReview(id, prID, reviewID, fetch);
+		selectedReview.set(review);
+	}
 
-  if (!pullRequest || Number(pullRequest.id) !== Number(prID)) {
-    pullRequest = await fetchPullRequest(id, prID, fetch)
-    selectedPullRequest.set(pullRequest)
-  }
+	if (!pullRequest || Number(pullRequest.id) !== Number(prID)) {
+		pullRequest = await fetchPullRequest(id, prID, fetch);
+		selectedPullRequest.set(pullRequest);
+	}
 
-  const fileReviews = await fetchFileReviews(id, prID, reviewID, fetch);
-  const repoID = id;
+	const fileReviews = await fetchFileReviews(id, prID, reviewID, fetch);
+	const repoID = id;
 	return {
 		repoID,
 		prID,
 		reviewID,
-		fileReviews,
+		fileReviews
 	};
 }
