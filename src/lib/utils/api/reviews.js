@@ -80,13 +80,14 @@ export async function fetchFileReviews(repositoryId, pullRequestId, reviewId, co
 	);
 }
 
-export async function createReview(repoID, prID, request, fetch) {
-	const method = request.method;
-	const headers = request.headers;
+export async function createReview(repoID, prID, name, cookies, fetch) {
 	return await fetch(`${API_URL}/repositories/${repoID}/pull-requests/${prID}/reviews`, {
-		method,
-		headers,
-		body: JSON.stringify(await request.json())
+    method: 'POST',
+		headers: {
+			'cookie': cookies,
+      'Content-Type': 'application/json',
+		},
+		body: JSON.stringify({ name }),
 	});
 }
 
