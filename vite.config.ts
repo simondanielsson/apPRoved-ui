@@ -6,7 +6,7 @@ dotenv.config({ path: '.env.frontend' });
 
 export default defineConfig({
 	plugins: [sveltekit()],
-  define: {
-    'process.env': process.env
-  }
+	define: {
+		'process.env': process.env
+	}
 });
