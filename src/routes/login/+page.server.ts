@@ -3,7 +3,6 @@ import { fail, redirect } from '@sveltejs/kit';
 
 export const actions = {
 	default: async ({ request, cookies }) => {
-    console.log('Got login action on server side +page.server.svelte');
 		const formData = await request.formData();
 		const username = formData.get('username');
 		const password = formData.get('password');
@@ -13,7 +12,6 @@ export const actions = {
 		}
 
 		const { token } = await loginUser(formData);
-    console.log('Got token in +page.server.svelte', token);
 
 		cookies.set('token', token, {
 			httpOnly: true, // Prevent client-side access to the token
