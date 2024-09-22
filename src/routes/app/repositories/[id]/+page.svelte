@@ -19,7 +19,7 @@
 	}
 </script>
 
-<div>
+<div class="p-4 overflow-y-auto">
 	<h2 class="text-2xl font-bold mb-6 text-primary">
 		Pull Requests for {repository ? repository.name : 'Loading...'}
 	</h2>

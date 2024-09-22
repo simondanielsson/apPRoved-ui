@@ -141,7 +141,7 @@
 	}
 </script>
 
-<div>
+<div class="p-4 h-full overflow-y-auto">
 	<div class="flex items-center">
 		<a class="mr-4 mb-6" href={`/app/repositories/${repoID}`} on:click={handleGoBack}>
 			<svg
