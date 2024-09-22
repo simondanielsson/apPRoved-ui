@@ -41,7 +41,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          APP_ENV=production VITE_API_URL=${{ secrets.VITE_API_URL }} ORIGIN=${{ secrets.ORIGIN }} JWT_SECRET=${{ secrets.JWT_SECRET }} docker build -t ${{ env.IMAGE_NAME }} .
+          APP_ENV=production docker build -t ${{ env.IMAGE_NAME }} .
 
       - name: Push Docker Image to GCP Artifact Registry
         run: |
