@@ -8,8 +8,8 @@ export async function loginUser(formData) {
 		});
 		const data = await response.json();
 		return data;
-	} catch {
-		throw new Error('Login failed');
+	} catch (error) {
+		throw new Error('Login failed: ' + error);
 	}
 }
 
