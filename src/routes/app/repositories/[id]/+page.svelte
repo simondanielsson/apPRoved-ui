@@ -3,19 +3,46 @@
 	import List, { Item } from '@smui/list';
 	import { selectedPullRequest } from '$lib/stores/pull-request';
 	import Time from 'svelte-time';
+	import { fetchPullRequests, updatePullRequests } from '$lib/utils/proxy/reviews';
+	import PopupNotification from '$lib/components/PopupNotification.svelte';
 
 	/** @type {import('./$types').PageData} */
 	export let data;
 	$: repoID = data.repoID;
 	$: repository = data.repository;
 	$: pullRequests = data.pullRequests || [];
+  let refreshResponseMessage = {
+    type: '',
+    message: ''
+  };
 
 	function handleSelectPullRequest(pr) {
 		selectedPullRequest.set(pr);
 	}
 
 	async function handleRefreshPullRequests() {
-		// TODO: refresh pull requests
+    try {
+      await updatePullRequests(repoID, fetch);
+      pullRequests = await fetchPullRequests(repoID, fetch);
+      refreshResponseMessage = {
+        type: 'success',
+        message: 'Pull requests refreshed successfully.'
+      }
+    } catch (error) {
+      console.error(error);
+
+      refreshResponseMessage = {
+        type: 'error',
+        message: 'Failed to refresh pull requests. Please try again later.'
+      };
+    }
+
+    setTimeout(() => {
+      refreshResponseMessage = {
+        type: '',
+        message: ''
+      };
+    }, 3000);
 	}
 </script>
 
@@ -31,7 +58,7 @@
 					on:click={() => handleSelectPullRequest(pr)}
 				>
 					<Item class="bg-white p-4 rounded-lg shadow-lg hover:bg-blue-100 cursor-pointer">
-						<h3 class="text-lg font-semibold">{pr.title} #{pr.number}</h3>
+            <h3 class="{pr.state === 'open' ? 'text-lg' : 'text-gray-700'} font-semibold">{pr.title} #{pr.number} ({pr.state})</h3>
 						<span class="text-gray-700"
 							>Updated at <Time timestamp={pr.updated_at} format="dddd @ h:mm A · MMMM D, YYYY" />
 						</span></Item
@@ -66,3 +93,9 @@
 		</div>
 	</List>
 </div>
+
+{#if refreshResponseMessage.message}
+  <PopupNotification type={refreshResponseMessage.type}>
+    {refreshResponseMessage.message}
+  </PopupNotification>
+{/if}

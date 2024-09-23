@@ -37,6 +37,15 @@ export async function fetchPullRequests(repositoryId, cookies, fetch, API_URL) {
 	});
 }
 
+export async function refreshPullRequests(repositoryId, cookies, fetch, API_URL) {
+  return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests`, {
+    method: 'PUT',
+    headers: {
+      Cookie: cookies
+    }
+  });
+}
+
 export async function fetchPullRequest(repositoryId, prID, cookies, fetch, API_URL) {
 	return await fetch(`${API_URL}/repositories/${repositoryId}/pull-requests/${prID}`, {
 		headers: {

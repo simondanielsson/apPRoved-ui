@@ -71,6 +71,15 @@ export async function fetchPullRequest(repositoryId, pullRequestId, fetch) {
 	return pullRequest.data;
 }
 
+export async function updatePullRequests(repositoryId, fetch) {
+  const response = await fetch(`/app/repositories/${repositoryId}/pull-requests`, {
+    method: 'PUT'
+  });
+  if (response.status != 200) {
+    throw new Error('Failed to update pull requests');
+  }
+}
+
 export async function fetchReviews(repositoryId, pullRequestId, fetch) {
 	const response = await fetch(
 		`/app/repositories/${repositoryId}/pull-requests/${pullRequestId}/reviews`
