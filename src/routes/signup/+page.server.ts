@@ -1,5 +1,6 @@
 import { registerUser } from '$lib/utils/api';
 import { fail, redirect } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -12,8 +13,7 @@ export const actions = {
 			return fail(400, { error: 'Missing username, password or email' });
 		}
 
-		const userID = await registerUser(formData);
-		// TODO: add popup for successful registration
+		const userID = await registerUser(formData, env.API_URL);
 		throw redirect(302, '/login?success=1');
 	}
 };

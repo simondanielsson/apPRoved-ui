@@ -1,6 +1,4 @@
-export const API_URL = process.env.API_URL || 'https://approved-api-620648088594.europe-north1.run.app/api/v1';
-
-export async function loginUser(formData) {
+export async function loginUser(formData, API_URL) {
 	try {
 		const response = await fetch(`${API_URL}/login`, {
 			method: 'POST',
@@ -13,7 +11,7 @@ export async function loginUser(formData) {
 	}
 }
 
-export async function registerUser(formData) {
+export async function registerUser(formData, API_URL) {
 	try {
 		const response = await fetch(`${API_URL}/register`, {
 			method: 'POST',

@@ -17,9 +17,9 @@ export function getTokenFromRequest(request) {
  * @param {string} token - The JWT token to verify.
  * @returns {Object|null} - The decoded user information or null if the token is invalid.
  */
-export function verifyToken(token) {
+export function verifyToken(token, JWT_SECRET) {
 	try {
-		const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+		const decoded = jwt.verify(token, JWT_SECRET, {
 			algorithms: ['HS256']
 		});
 

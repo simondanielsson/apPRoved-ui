@@ -1,5 +1,6 @@
 import { loginUser } from '$lib/utils/api';
 import { fail, redirect } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 
 export const actions = {
 	default: async ({ request, cookies }) => {
@@ -11,7 +12,7 @@ export const actions = {
 			return fail(400, { error: 'Missing username or password' });
 		}
 
-		const { token } = await loginUser(formData);
+		const { token } = await loginUser(formData, env.API_URL);
 
 		cookies.set('token', token, {
 			httpOnly: true, // Prevent client-side access to the token

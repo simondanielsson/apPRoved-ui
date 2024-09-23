@@ -1,6 +1,7 @@
 import { verifyToken } from '$lib/utils/token';
 import type { Handle } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
+import { env } from '$env/dynamic/private';
 
 // Performed during the server-side routing phase, initially when pages loads.
 // Here we can prevent access to certain routes if the user is not authenticated.
@@ -19,7 +20,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 		}
 
 		try {
-			const user = verifyToken(token);
+			const user = verifyToken(token, env.JWT_SECRET);
 			if (user) {
 				event.locals.user = user;
 			}
