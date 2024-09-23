@@ -4,6 +4,7 @@ import { env } from '$env/dynamic/private';
 
 export const actions = {
 	default: async ({ request }) => {
+    throw redirect(302, '/login');
 		const formData = await request.formData();
 		const username = formData.get('username');
 		const password = formData.get('password');
