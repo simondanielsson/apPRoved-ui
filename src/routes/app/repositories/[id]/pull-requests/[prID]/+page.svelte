@@ -141,7 +141,7 @@
 	}
 </script>
 
-<div class="p-4 h-full overflow-y-auto">
+<div class="p-4 overflow-y-auto max-h-[calc(100vh-120px)] flex flex-col">
 	<div class="flex items-center">
 		<a class="mr-4 mb-6" href={`/app/repositories/${repoID}`} on:click={handleGoBack}>
 			<svg
@@ -161,7 +161,7 @@
 		</h2>
 	</div>
 
-	<List class="space-y-4">
+	<List class="space-y-4 overflow-y-auto">
 		{#if reviews}
 			{#each reviews as review}
 				<div

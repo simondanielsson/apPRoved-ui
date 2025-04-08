@@ -15,6 +15,6 @@ export default {
 				'fira-code': ['Fira Code', 'monospace']
 			}
 		}
-	},
-	plugins: [require('@tailwindcss/typography')]
+	}
+	// plugins: [require('@tailwindcss/typography')]
 };

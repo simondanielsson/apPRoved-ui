@@ -55,7 +55,7 @@
 
 		<div class="flex h-full w-full">
 			<!-- Left Panel: File Directory -->
-			<div class="w-80 min-w-80 bg-gray-100 p-4 overflow-y-auto">
+			<div class="w-80 min-w-[200px] max-w-[300px] bg-gray-100 p-4 overflow-y-auto">
 				<h3 class="text-xl font-bold mb-4">Files in Review</h3>
 				<List class="space-y-2">
 					{#each Object.keys(fileTree) as key}
@@ -69,8 +69,10 @@
 			</div>
 
 			<!-- Right Panel: File Content & Comments -->
-			<div class="flex-grow p-6 overflow-y-auto">
-				<FileDiffAndReview {selectedFileReview} />
+			<div class="flex-1 p-6 max-w-[1150px] overflow-y-auto overflow-x-hidden">
+				<div class="w-full overflow-x-hidden">
+					<FileDiffAndReview {selectedFileReview} />
+				</div>
 			</div>
 		</div>
 	</div>

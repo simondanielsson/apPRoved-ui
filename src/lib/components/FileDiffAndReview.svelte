@@ -33,6 +33,7 @@
 		background-color: #f6f8fa;
 		padding: 10px;
 		border-radius: 8px;
+		width: 100%;
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 		overflow-x: auto;
 		position: sticky;

@@ -17,7 +17,7 @@
 		<Sidebar {repositories} on:createRepository={handleCreateRepository} />
 	</aside>
 
-	<main class="flex-grow flex justify-center items-center p-8 bg-gray-50">
+	<main class="flex-grow flex justify-center items-start p-8 bg-gray-50">
 		<slot />
 	</main>
 </div>
